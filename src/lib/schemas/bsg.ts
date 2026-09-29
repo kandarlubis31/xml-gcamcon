@@ -1,0 +1,158 @@
+// ============================================================
+// xml-gcamcon — BSG MGC Port Schema
+// ============================================================
+
+import type { GcamPortSchema, CameraId } from "@/types";
+
+const lenses: CameraId[] = [0, 1, 2, 3];
+
+export const bsgSchema: GcamPortSchema = {
+  meta: {
+    id: "bsg",
+    name: "BSG MGC",
+    developer: "BSG",
+    configFolder: "/GCam/Configs/",
+    loadGesture: "Double-tap area near shutter button",
+    description: "BSG's MGC is the most popular and widely-compatible GCam port. Known for stable HDR+ processing and excellent LibPatcher controls.",
+    recommendedVersion: "MGC 8.4 / 8.9",
+    website: "https://www.celsoazevedo.com/files/android/google-camera/dev-bsg/",
+  },
+  supportedLenses: lenses,
+  categories: [
+    {
+      id: "libpatcher",
+      label: "Lib Patcher",
+      icon: "🔧",
+      perLens: true,
+      params: [
+        { key: "lib_sharpness", label: "Sharpness", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Higher = sharper image, can cause halo artifacts" },
+        { key: "lib_spatial_denoise", label: "Spatial Denoise", type: "float", defaultValue: 1.5, min: 0.0, max: 5.0, step: 0.1, description: "Lower = softer image, loses color/light structure" },
+        { key: "lib_chroma_denoise", label: "Chroma Denoise", type: "float", defaultValue: 1.0, min: 0.0, max: 10.0, step: 0.1, description: "Higher removes color noise but can cause blurring" },
+        { key: "lib_luma_denoise", label: "Luma Denoise", type: "float", defaultValue: 1.0, min: 0.0, max: 5.0, step: 0.1, description: "Luminance noise reduction, lower = more aggressive" },
+        { key: "lib_saturation", label: "Saturation", type: "float", defaultValue: 1.0, min: 0.5, max: 2.5, step: 0.05, description: "Color saturation focused on lights/shadows" },
+        { key: "lib_saturation2", label: "Saturation 2", type: "float", defaultValue: 1.0, min: 0.5, max: 2.5, step: 0.05, description: "Global color vibrancy, works with Saturation 1" },
+        { key: "lib_contrast", label: "Contrast 1", type: "float", defaultValue: 1.0, min: 0.5, max: 2.0, step: 0.1, description: "Higher = lighter photos, lower = less clarity" },
+        { key: "lib_contrast2", label: "Contrast 2", type: "float", defaultValue: 1.0, min: 0.5, max: 2.0, step: 0.1, description: "Color vibrancy contrast" },
+        { key: "lib_contrast3", label: "Contrast 3", type: "float", defaultValue: 1.0, min: 0.5, max: 2.0, step: 0.1, description: "Lighting contrast, lower = flatter, higher = deeper blacks" },
+        { key: "lib_temporal_radius", label: "Temporal Radius", type: "float", defaultValue: 2.0, min: 0.0, max: 5.0, step: 0.5, description: "Most powerful noise reduction. Higher = less artifacts/cleaner image" },
+        { key: "lib_noise_reduction", label: "Noise Reduction", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Higher = more noise but more sharpness", advanced: true },
+        { key: "lib_dynamic_noise_reduction", label: "Dynamic NR", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Similar to conventional Noise Reduction", advanced: true },
+        { key: "lib_chroma_micro", label: "Chroma Micro", type: "float", defaultValue: 1.0, min: 0.5, max: 3.0, step: 0.1, description: "Lower values = color leakage. Keep above default", advanced: true },
+        { key: "lib_luma_noise", label: "Luma Noise", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Lower causes green tint on edges in dark areas", advanced: true },
+        { key: "lib_noise_aberration", label: "Noise Aberration", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Higher = less aberrations in noise", advanced: true },
+        { key: "lib_smoothness", label: "Smoothness", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Higher = softer, reduces sharpening structure" },
+        { key: "lib_dehaze", label: "Dehaze", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Lower = less contrast, more hazy" },
+        { key: "lib_clarity", label: "Clarity", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Controls mid-tone clarity", advanced: true },
+        { key: "lib_brightness", label: "Brightness", type: "float", defaultValue: 1.0, min: 0.5, max: 2.0, step: 0.05, description: "Subtle highlight control" },
+      ],
+    },
+    {
+      id: "exposure",
+      label: "Exposure & HDR",
+      icon: "☀️",
+      perLens: false,
+      params: [
+        { key: "hdr_up", label: "HDR Up", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Higher = darker image. Controls HDR blend exposure" },
+        { key: "exposure_new", label: "Exposure New", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Controls highlights. Lower = stronger highlights" },
+        { key: "exposure_new2", label: "Exposure New 2", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Supports Exposure New for white burst control" },
+        { key: "under_exposure", label: "Under Exposure", type: "float", defaultValue: 1.0, min: 0.5, max: 4.0, step: 0.1, description: "Higher = darker. Great for night configs, preserves shadows" },
+        { key: "under_exposure1", label: "Under Exposure 1", type: "float", defaultValue: 1.0, min: 0.5, max: 3.0, step: 0.1, description: "Fine-tune highlight decrease" },
+        { key: "under_exposure2", label: "Under Exposure 2", type: "float", defaultValue: 1.0, min: 0.5, max: 3.0, step: 0.1, description: "Fine-tune with matrix, stronger effect" },
+        { key: "exposure_darker1", label: "Exposure Darker 1", type: "float", defaultValue: 1.0, min: 0.5, max: 4.0, step: 0.1, description: "Dramatically reduces highlights. Essential for night XMLs" },
+        { key: "exposure_darker2", label: "Exposure Darker 2", type: "float", defaultValue: 1.0, min: 0.5, max: 4.0, step: 0.1, description: "Use together with Darker 1 for night" },
+        { key: "darken_light", label: "Darken Light", type: "float", defaultValue: 1.0, min: 0.3, max: 2.0, step: 0.1, description: "Lower = drastically darker, can be used as contrast" },
+        { key: "expo_map_lut", label: "Expo Map LUT", type: "float", defaultValue: 1.0, min: 0.5, max: 3.0, step: 0.1, description: "Higher darkens photos", advanced: true },
+        { key: "hdr_frames", label: "HDR+ Frames", type: "select", defaultValue: "15", options: [
+          { label: "7 frames (faster)", value: "7" },
+          { label: "15 frames (balanced)", value: "15" },
+          { label: "21 frames (quality)", value: "21" },
+          { label: "30 frames (max quality)", value: "30" },
+          { label: "Auto", value: "auto" },
+        ], description: "Number of exposures for HDR merge. More = better NR but more ghosting" },
+      ],
+    },
+    {
+      id: "awb",
+      label: "AWB & Color",
+      icon: "🎨",
+      perLens: true,
+      params: [
+        { key: "awb_enabled", label: "Google AWB", type: "boolean", defaultValue: true, description: "Enable Google Auto White Balance. Fixes green tint on Mi A1!" },
+        { key: "awb_model", label: "AWB Model", type: "select", defaultValue: "pixel7pro", options: [
+          { label: "Pixel 7 Pro", value: "pixel7pro" },
+          { label: "Pixel 6 Pro", value: "pixel6pro" },
+          { label: "Pixel 5", value: "pixel5" },
+          { label: "Pixel 4 XL", value: "pixel4xl" },
+          { label: "Pixel 3", value: "pixel3" },
+          { label: "IMX586 (Sony)", value: "imx586" },
+        ], description: "Choose AWB color science profile" },
+        { key: "color_transform", label: "Color Transform Model", type: "select", defaultValue: "default", options: [
+          { label: "Default (Auto)", value: "default" },
+          { label: "Pixel 7 Pro", value: "pixel7pro" },
+          { label: "Pixel 6 Pro", value: "pixel6pro" },
+          { label: "Mi 11 Ultra", value: "mi11ultra" },
+          { label: "K30 Pro", value: "k30pro" },
+          { label: "None", value: "none" },
+        ], description: "Apply Color Correction Matrix from another device" },
+        { key: "lib_green_coeff", label: "Green Coefficient", type: "float", defaultValue: 1.0, min: 0.0, max: 2.0, step: 0.01, description: "Fine-tune green channel", advanced: true },
+        { key: "lib_red_coeff", label: "Red Coefficient", type: "float", defaultValue: 1.0, min: 0.0, max: 2.0, step: 0.01, description: "Fine-tune red channel", advanced: true },
+        { key: "lib_blue_coeff", label: "Blue Coefficient", type: "float", defaultValue: 1.0, min: 0.0, max: 2.0, step: 0.01, description: "Fine-tune blue channel", advanced: true },
+      ],
+    },
+    {
+      id: "sabre",
+      label: "Sabre Merge",
+      icon: "🔍",
+      perLens: false,
+      params: [
+        { key: "sabre_enabled", label: "Sabre Enabled", type: "boolean", defaultValue: true, description: "Google's Super Resolution merge algorithm" },
+        { key: "sabre_1", label: "Sabre 1", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Lower = more sharpness with zoom. Affects text/numbers" },
+        { key: "sabre_2", label: "Sabre 2", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Works with Sabre 1 for fine sharpening" },
+        { key: "sabre_noise", label: "Sabre Noise", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Higher = pink spots in highlights / chromatic aberrations" },
+      ],
+    },
+    {
+      id: "noise_models",
+      label: "Noise Models",
+      icon: "📊",
+      perLens: true,
+      params: [
+        { key: "noise_model_channels", label: "NMC Active", type: "boolean", defaultValue: false, description: "Noise Model Channels — fine-tune noise per sensor channel", advanced: true },
+        { key: "active_noise_models", label: "ANM Enable", type: "boolean", defaultValue: false, description: "Active Noise Models — enable/disable noise shaper", advanced: true },
+        { key: "noise_model_blocker", label: "Noise Model Blocker", type: "boolean", defaultValue: false, description: "Block or grant noise shaper. Use with NMC+ANM", advanced: true },
+        { key: "noise_suppression", label: "Noise Suppression", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Higher = more aggressive NR", advanced: true },
+        { key: "lut_noise1", label: "LUT Noise 1", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Lower = more aggressive in low-level dark areas", advanced: true },
+        { key: "lut_noise2", label: "LUT Noise 2", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Works with LUT Noise 1", advanced: true },
+      ],
+    },
+    {
+      id: "spatial",
+      label: "Spatial Settings",
+      icon: "🌐",
+      perLens: true,
+      params: [
+        { key: "spatial_n2", label: "Spatial N2", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Noise reduction. Lower = less noise", advanced: true },
+        { key: "spatial_sub1", label: "Spatial Sub 1", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Spatial noise reduction sub-setting", advanced: true },
+        { key: "spatial_sub2", label: "Spatial Sub 2", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Spatial noise reduction sub-setting", advanced: true },
+        { key: "spatial_coef_smoothin", label: "Spatial Coef Smoothing", type: "float", defaultValue: 1.0, min: 0.0, max: 3.0, step: 0.1, description: "Works with Temporal Denoise", advanced: true },
+      ],
+    },
+    {
+      id: "preferences",
+      label: "General Settings",
+      icon: "⚙️",
+      perLens: false,
+      params: [
+        { key: "pref_qjpg_key", label: "JPEG Quality", type: "select", defaultValue: "97", options: [
+          { label: "100% (best)", value: "100" },
+          { label: "97% (recommended)", value: "97" },
+          { label: "95%", value: "95" },
+          { label: "90%", value: "90" },
+        ], description: "Output JPEG quality percentage" },
+        { key: "pref_camera_selfie_mirror_key", label: "Selfie Mirror", type: "boolean", defaultValue: true, description: "Mirror front camera preview" },
+        { key: "motion_photo", label: "Motion Photo", type: "boolean", defaultValue: false, description: "Capture short video clips with photos" },
+        { key: "hdrnet_enabled", label: "HDRNet", type: "boolean", defaultValue: false, description: "Real-time HDR preview" },
+      ],
+    },
+  ],
+};
