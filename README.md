@@ -1,45 +1,52 @@
-# xml-gcamcon
+# xml-gcamcon — GCam Config Maker
 
-## Tentang Project
+Alat web untuk membuat, menyunting, mengimpor, dan mengekspor konfigurasi XML GCam — tanpa harus
+mengedit XML secara manual.
 
-This is a Next.js project bootstrapped with create-next-app . First, run the development server: Open http://localhost:3000 with your browser to see the result. You can start editing the page by modifying app/page.tsx . The page auto-updates as you edit the file. This project uses next/font to automatically optimize and load Geist, a new font family for Vercel.
+Pemilik ponsel Android yang memasang GCam (Google Camera port) biasanya harus menyunting berkas
+XML berisi ratusan parameter per lensa. Satu salah nama tag, kamera menolak konfigurasi atau hasil
+foto memburuk. Alat ini memberi antarmuka visual untuk pekerjaan tersebut, plus basis data
+perangkat yang sudah dikenal baik konfigurasinya.
 
-## Tech Stack
+## Fitur
 
-Node.js; deps: next, react, react-dom; dev: @tailwindcss/postcss, @types/node, @types/react, @types/react-dom, eslint
-
-## Struktur Utama
-
-```
-public/
-src/
-.gitignore
-AGENTS.md
-CLAUDE.md
-CONTEXT.md
-eslint.config.mjs
-next-env.d.ts
-next.config.ts
-package.json
-PLAN.md
-pnpm-lock.yaml
-pnpm-workspace.yaml
-postcss.config.mjs
-README.md
-tsconfig.json
-tsconfig.tsbuildinfo
-```
+- **Empat skema port** — BSG, LMC, Arnova, dan AGC, masing-masing dengan struktur parameter sendiri
+- **23 perangkat** di basis data, konfigurasi disusun per lensa dan per kategori
+- **Editor visual** — ubah nilai parameter lewat kontrol, bukan lewat teks XML
+- **Impor XML** — unggah, seret-lepas, atau tempel langsung
+- **Ekspor XML** — unduh berkas siap pakai untuk GCam
+- **5 preset** siap pakai (optimasi Mi A1)
+- **Penyimpanan lokal** — draf disimpan di `localStorage` dengan penulisan tertunda (debounce)
+- **Tema gelap** dan TypeScript mode ketat
 
 ## Menjalankan
 
-- `npm run dev`
-- `npm run start`
-- `npm run build`
+```bash
+pnpm install
+pnpm dev        # http://localhost:3000
+pnpm build
+pnpm start
+```
 
----
+## Stack
 
-*Generated: 2026-08-08 · Path: nodeJS\xml-gcamcon*
+Next.js (App Router) · React · TypeScript (strict) · Tailwind CSS v4 · pnpm
 
----
+## Struktur
 
-Lihat `CONTEXT.md` di folder ini untuk detail arsitektur.
+```
+src/app/          Halaman dan layout
+src/components/   Editor, pemilih preset, panel parameter
+src/lib/          Parser & serializer XML, basis data perangkat
+src/types/        Tipe parameter dan skema port
+```
+
+## Status
+
+MVP berjalan. Rencana perbaikan tercatat di [`PLAN.md`](PLAN.md) — antara lain: preset masih
+mengabaikan filter perangkat, belum ada error boundary untuk `localStorage` yang rusak, dan belum
+ada unit test.
+
+## Lisensi
+
+Lihat `LICENSE` di repository ini.
