@@ -1,40 +1,54 @@
 # xml-gcamcon — Project Context
 
 ## Ringkasan
-This is a Next.js project bootstrapped with create-next-app . First, run the development server: Open http://localhost:3000 with your browser to see the result. You can start editing the page by modifying app/page.tsx . The page auto-updates as you edit the file. This project uses next/font to automatically optimize and load Geist, a new font family for Vercel.
 
-> *Context ini dibuat otomatis oleh `catalog/generate_contexts.py`. Isi ulang
-> bagian ringkasan / arsitektur secara manual jika butuh detail lebih dalam.*
+GCam Config Maker: alat web untuk membuat, menyunting, mengimpor, dan mengekspor konfigurasi XML
+untuk GCam (Google Camera port) di Android. Pengguna tidak perlu menyentuh XML mentah.
 
-## Tech Stack
-Node.js; deps: next, react, react-dom; dev: @tailwindcss/postcss, @types/node, @types/react, @types/react-dom, eslint
+## Domain
 
-## Struktur Utama
+Konfigurasi GCam berbeda antar port. Tiap port memakai nama tag dan struktur parameter sendiri,
+sehingga aplikasi menyimpan **skema per port**:
+
+| Port | Catatan |
+| :--- | :--- |
+| BSG | Basis konfigurasi paling umum |
+| LMC | Varian dengan penamaan berbeda |
+| Arnova | Struktur parameter sendiri |
+| AGC | Format mendekati `.agc` |
+
+Parameter disusun **per lensa** (utama, ultra-wide, tele) dan **per kategori**. Basis data memuat 23
+perangkat, dengan 5 preset siap pakai yang dioptimalkan untuk Mi A1.
+
+## Struktur
+
 ```
-public/
-src/
-.gitignore
-AGENTS.md
-CLAUDE.md
-CONTEXT.md
-eslint.config.mjs
-next-env.d.ts
-next.config.ts
-package.json
-PLAN.md
-pnpm-lock.yaml
-pnpm-workspace.yaml
-postcss.config.mjs
-README.md
-tsconfig.json
-tsconfig.tsbuildinfo
+src/app/          Halaman dan layout (App Router)
+src/components/   Editor, pemilih preset, panel parameter
+src/lib/          Parser & serializer XML, basis data perangkat, preset
+src/types/        Tipe parameter dan skema port
 ```
 
-## Cara Menjalankan
-- `npm run dev`
-- `npm run start`
-- `npm run build`
+## Keputusan desain
 
----
+- **Skema eksplisit, bukan heuristik.** Saat mengimpor XML, pengguna memilih port sumbernya; parser
+  tidak menebak dari nama tag.
+- **Draf disimpan di `localStorage`** dengan penulisan tertunda (debounce), sehingga perubahan tidak
+  hilang saat tab ditutup tanpa harus ada akun server.
+- **Ekspor menghasilkan berkas siap pakai** untuk folder konfigurasi GCam.
 
-*Generated: 2026-08-08 · Path: nodeJS\xml-gcamcon*
+## Menjalankan
+
+```bash
+pnpm install
+pnpm dev      # http://localhost:3000
+pnpm build && pnpm start
+```
+
+## Jebakan yang diketahui
+
+Daftar lengkap ada di `PLAN.md`. Yang paling berdampak:
+
+- Pemilih preset masih memakai `miA1Presets` tanpa menghiraukan perangkat yang dipilih.
+- Belum ada error boundary: `localStorage` yang rusak membuat aplikasi gagal render.
+- Belum ada unit test, termasuk untuk parser/serializer XML.
