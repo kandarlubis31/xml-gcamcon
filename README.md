@@ -47,6 +47,14 @@ MVP berjalan. Rencana perbaikan tercatat di [`PLAN.md`](PLAN.md) — antara lain
 mengabaikan filter perangkat, belum ada error boundary untuk `localStorage` yang rusak, dan belum
 ada unit test.
 
+---
+
+## English
+
+**xml-gcamcon** is a web tool for creating, editing, importing, and exporting GCam XML configuration files without hand-editing XML.
+
+---
+
 ## Lisensi
 
 Lihat `LICENSE` di repository ini.
